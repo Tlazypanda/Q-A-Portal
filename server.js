@@ -1,19 +1,18 @@
    var mongoose = require('mongoose'),
        nev = require('email-verification')(mongoose),
-       user=require('./model'),
+       User=require('./model'),
        express=require('express'),
        hbs=require('hbs'),
        bodyParser=require('body-parser'),email='',password='';
     
-   mongoose.connect('mongodb://localhost:27017/user-credentials');
-   var app=express();
-   app.set('view engines','hbs');
-   app.use('/',express.static(__dirname+'assets'));
-   //app.use(express.static(__dirname+'assets/styles.css'));
-   var TempUser = nev.generateTempUserModel(User);
+    mongoose.connect('mongodb://localhost:27017/user-credentials');
+    var app=express();
+    app.set('view engines','hbs');
+   
+    var TempUser = nev.generateTempUserModel(User);
 
-var options={
-    verificationURL: 'http://example.com/email-verification/${URL}',
+    var options={
+    verificationURL: `localhost:3000/land/${URL}`,
     URLLength: 48,
  
     // mongo-stuff
@@ -60,73 +59,79 @@ app.get('/signup',(req,res)=>
 {
     res.render('login.hbs');
 });
+app.get('/land',(req,res)=>
+{
+    res.render('land.hbs');
+});
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
  
 app.post('/signup', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400);
-  res.send('Welcome'+email);
+  
   
   email = req.body.email,
     password = req.body.password;
-});
-var newUser = user({
-    email: email,
-    password: password
-});
-nev.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
-    // some sort of error
-    if (err)
-        console.log('Unable to add user');
- 
-    // user already exists in persistent collection...
-    if (existingPersistentUser)
-        // handle user's existence... violently.
-        console.log('User exists with same id');
-    // a new user
-    if (newTempUser) {
-        var URL = newTempUser[nev.options.URLFieldName];
-        nev.sendVerificationEmail(email, URL, function(err, info) {
-            if (err)
-                console.log("Network failure");
- 
-            // flash message of success
-        });
- 
-    // user already exists in temporary collection...
-    } else {
-        // flash message of failure...
-    }
+    var newUser = User({
+        email: email,
+        password: password
+    });
+    nev.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
+        // some sort of error
+        if (err)
+            res.send('Unable to add user');
+     
+        // user already exists in persistent collection...
+        if (existingPersistentUser)
+            // handle user's existence... violently.
+            res.send('User exists with same id');
+        // a new user
+        if (newTempUser) {
+            var URL = newTempUser[nev.options.URLFieldName];
+            nev.sendVerificationEmail(email, URL, function(err, info) {
+                if (err)
+                res.send("Network failure");
+     
+                res.send('Verification email sent');
+            });
+     
+        // user already exists in temporary collection...
+        } else {
+           res.send('Please verify your account from email');
+        }
+    });
 });
 
-var myHasher = function(password, tempUserData, insertTempUser, callback) {
-    var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-    return insertTempUser(hash, tempUserData, callback);
-  };
+
+
+// var myHasher = function(password, tempUserData, insertTempUser, callback) {
+//     var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+//     return insertTempUser(hash, tempUserData, callback);
+//   };
    
-  // async version of hashing function
-  myHasher = function(password, tempUserData, insertTempUser, callback) {
-    bcrypt.genSalt(8, function(err, salt) {
-      bcrypt.hash(password, salt, function(err, hash) {
-        return insertTempUser(hash, tempUserData, callback);
-      });
-    });
-  };
-  var url = '...';
-nev.confirmTempUser(url, function(err, user) {
-    if (err)
-        // handle error...
+//   // async version of hashing function
+//   myHasher = function(password, tempUserData, insertTempUser, callback) {
+//     bcrypt.genSalt(8, function(err, salt) {
+//       bcrypt.hash(password, salt, function(err, hash) {
+//         return insertTempUser(hash, tempUserData, callback);
+//       });
+//     });
+//   };
+//   var url = '...';
+// nev.confirmTempUser(url, function(err, user) {
+//     if (err)
+//         // handle error...
  
-    // user was found!
-    if (user) {
-        // optional
-        nev.sendConfirmationEmail(user['email_field_name'], function(err, info) {
-            // redirect to their profile...
-        });
-    }
+//     // user was found!
+//     if (user) {
+//         // optional
+//         nev.sendConfirmationEmail(user['email_field_name'], function(err, info) {
+//             // redirect to their profile...
+//         });
+//     }
  
-    // user's data probably expired...
-    else
-        // redirect to sign-up
-});
+//     // user's data probably expired...
+//     else
+//         // redirect to sign-up
+// });
 
  app.listen(3000);
