@@ -1,10 +1,11 @@
    var mongoose = require('mongoose'),
        nev = require('email-verification')(mongoose),
-       User=require('./model'),
+       User=require('./userModel'),
        express=require('express'),
        hbs=require('hbs'),
-       bodyParser=require('body-parser'),email='',password='';
-    
+       bodyParser=require('body-parser'),email='',password='',
+       randomstring = require("randomstring"),
+       URL=randomstring.generate(10);
     mongoose.connect('mongodb://localhost:27017/user-credentials');
     var app=express();
     app.set('view engines','hbs');
@@ -13,10 +14,10 @@
 
     var options={
     verificationURL: `localhost:3000/land/${URL}`,
-    URLLength: 48,
+    URLLength: 10,
  
     // mongo-stuff
-    persistentUserModel: user,
+    persistentUserModel: User,
     tempUserModel: TempUser,
     tempUserCollection: 'temporary_users',
     emailFieldName: 'email',
