@@ -10,9 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
     "email-verification": "^0.4.6",
     "express": "^4.16.3",
     "hbs": "^4.0.1",
-    "mongoose": "^5.1.1"
+    "mongoose": "^5.1.1",
+    "randomstring": "^1.1.5"
   }
 }
