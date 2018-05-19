@@ -1,0 +1,8 @@
+<h1> This is the questions page:</h1>
+<p>
+    <a href="question/new">ask a question</a>
+</p>
+
+<% questions.forEach(function(question){ %>
+            <h4><%= question.id %> <%= question.content %> </h4>
+    <% }); %>
