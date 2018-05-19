@@ -14,14 +14,19 @@ mongoose.connect('mongodb://localhost/Q&AForum',function(){
     //prints 1 if connection made
     console.log(mongoose.connection.readyState);});
 
-app.get("/question",function(req,res){
-    res.send("Why, hello there!");
+app.get("/",function(req,res){
+    res.render("links");
 });
 
 app.get("/question/new",function(req,res){
     res.render("questions/new");
 });
 
-app.listen("2000",function(){
+app.get("/question",function(req,res){
+    res.send("Why, hello there!");
+});
+
+
+app.listen(3456, "127.0.0.1", function (){
     console.log("it lives");
 });
