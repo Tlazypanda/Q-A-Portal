@@ -2,7 +2,7 @@
 var mongoose = require('mongoose'),
 User=require('./userModel'),
 express=require('express'),
-hbs=require('hbs'),
+ejs=require('ejs'),
 session = require('client-sessions'),
 bodyParser=require('body-parser'),
 email='',password='',
@@ -11,7 +11,7 @@ smtpTransport = require('nodemailer-smtp-transport');
 //setting app and middlewares
 mongoose.connect('mongodb://localhost:27017/user-credentials');
 var app=express();
-app.set('view engines','hbs');
+app.set('view engines','ejs');
 app.use(session({
     cookieName: 'session',
     secret: 'random_string_goes_here',
@@ -36,12 +36,12 @@ app.get('/signup',(req,res)=>
                     }
                 );
                   console.log(user);
-              res.render('login.hbs');
+              res.render('login.ejs');
               }
         })
     }
     else{
-        res.render('signup.hbs');
+        res.render('signup.ejs');
     }
 });
 
@@ -86,7 +86,7 @@ transporter.sendMail(mailOptions, function(error, info){
         res.json({yo: 'error'});
     }else{
         console.log('Message sent: ' + info.response);
-       res.render('land.hbs');
+       res.render('land.ejs');
     };
 });
 });
