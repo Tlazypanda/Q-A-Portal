@@ -1,8 +1,46 @@
-<h1> This is the questions page:</h1>
-<p>
-    <a href="question/new">ask a question</a>
-</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="question/new">Ask a question</a></li>
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="">Blank</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+<ul class="collection">
 <% questions.forEach(function(question){ %>
-            <h4><%= question.id %> <%= question.content %> </h4>
+    <li class="collection-item avatar">      
+		<p><%= question.date %></p><br><p> <%= question.content %></p><br><span ><i class="material-icons">favorite</i><%= question.likes %></span>
+			<form action="/question/like/<%= question.id %>" method="POST">
+    <button class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">favorite</i></button>
+</form>
+		<ul class="collection">
+			<% question.answers.forEach(function(answer){ %>
+			<li class="collection-item avatar">
+				<span><%= answer.answerDate %></span><br>
+				<p><%= answer.answerBody %></p><br>
+			</li>
+<% }); %>
+		</ul>
+	
+	</li>
+			
+				<form action="/question/answer/<%= question.id %>" method="POST">
+    <input type="text" name="answerBody" placeholder="">
+    <button class="waves-effect waves-light btn">Submit<i class="material-icons right">send</i></button>
+</form>
+			
+				<p>Please <a href="/auth/google">Log</a>in to leave a comment</p>
+			
+
     <% }); %>
+</ul>

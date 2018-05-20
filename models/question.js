@@ -9,11 +9,32 @@ var questionSchema = new mongoose.Schema({
         },
         username: String
     },
-    answers: [
+	
+	date:{
+		type:Date,
+		default:Date.now()
+	},
+	likes:{
+		type:Number,
+		default:0
+	},
+    answers: [{
+		
+			answerBody:{
+				type:String,
+				required:true
+			},
+			answerDate:{
+			type:Date,
+		default:Date.now()
+		},
+		
+		answerUser:
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref:"Answer"
+            ref:"User"
         }
+		}
     ]
 }); 
 
