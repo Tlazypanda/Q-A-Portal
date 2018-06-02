@@ -1,31 +1,24 @@
 var mongoose=require('mongoose');
-var bcrypt=require('bcrypt');
-var UserSchema=new mongoose.Schema({
+var user=mongoose.model('newUser',{
     email:{
         type:String,
-        required:true,
-        unique:true
+        required:true
     },
     password:
     {
         type:String,
-        required:true
+        required:true,
+        minlength:8,
+        maxlength:32
     },
-    isVerified:{
-        type:Boolean,
-        default:false
+    confirmPassword:{
+        type:String,
+        required:true,
+        minlength:8,
+        maxlength:32
     }
 });
-UserSchema.pre('save', function (next) {
-    var user = this;
-    bcrypt.hash(user.password, 10, function (err, hash){
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    })
-  });
-var User = mongoose.model('User', UserSchema);
-module.exports=User;
+module.exports={
+    user
+};
 
