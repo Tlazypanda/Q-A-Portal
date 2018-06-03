@@ -11,7 +11,7 @@
 
 body {
     margin: 0 0 100px;
-	background-color:orange;
+	background-image:url("../images/text.jpg");
     /* bottom = footer height */
     
 }
@@ -29,11 +29,44 @@ footer{
 	
 	.card{
 		padding:25px;
-		margin:auto
+		margin-left:40%;
+		width:600px;
 	}
 	
 	.card .fav{
 		float:right;
+	}
+	
+	.activator{
+		height:300px;
+	}
+	.card .card-content{
+		padding:0;
+		margin:0;
+	}
+	.card .card-title{
+		padding:0;
+		margin:0;
+	}
+	h1{
+		margin:0;
+	}
+	form{
+		margin:0;
+	}
+	.answers{
+		margin:0;
+		padding:0;
+	}
+	
+	.user{
+		position:absolute;
+		margin:55px;
+		width:400px;
+		color:white;
+		padding:25px;
+		
+		
 	}
 	
 	
@@ -48,46 +81,67 @@ footer{
       </ul>
     </div>
   </nav>
-
-
+<div class="card teal  col s3 l3 user">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="../images/philipwalton.jpg">
+    </div>
+    <div class="card-content">
+      <span  class="card-title activator white-text"><h4 >Philip Walton</h4><i class="material-icons right">more_vert</i>
+		  <p>Joined Aug 2017</p><br>
+		  <p>Questions Asked: 3</p><br>
+		  <p>Football fan</p>
+		</span>
+	<button class="waves-effect waves-light orange btn">Profile<i class="material-icons right">send</i></button></div>
+</div>
 
 <ul class="coll">
-<% questions.forEach(function(question){ %>
-    <li class="collection-item avatar">      
-		<div class="card">
-			<p><%= question.date %></p><br><h3><b> <%= question.content %></b></h3><span class="fav"><i class="material-icons">favorite</i><%= question.likes %></span>
-		</div>
-			<form action="/question/like/<%= question.id %>" method="POST">
+	
+	<% questions.forEach(function(question){ %>
+	
+ <div class="card orange lighten-2 col s3 l3">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="../images/c.jpg">
+    </div>
+    <div class="card-content">
+      <span class="card-title activator white-text "><h1><%= question.content %></h1><i class="material-icons right">more_vert</i>
+		   <form action="/question/like/<%= question.id %>" method="POST">
 	<br>			
     <button class="btn-floating btn-large waves-effect waves-light red" style="float:right"><i class="material-icons">favorite</i></button>
 </form>
-		<h4 style="color:white">Answers</h4>
-		<ul class="coll" >
+		
+		<h3>Answer now</h3>
+			
+				<form action="/question/answer/<%= question.id %>" method="POST">
+    <input type="text" name="answerBody" placeholder="">
+    <button class="waves-effect waves-light btn">Submit<i class="material-icons right">send</i></button>
+</form><p>Please <a href="/auth/google">Login</a> to leave a comment</p></span>
+     
+		<span class="fav"><i class="material-icons">favorite</i><%= question.likes %></span>
+		
+    </div>
+    <div class="card-reveal">
+		
+		
+      <span class="card-title grey-text text-darken-4">Answers<i class="material-icons right">close</i></span>
+      <ul class="coll answers" >
 			
 			<% question.answers.forEach(function(answer){ %>
 			<li class="collection-item avatar">
-				<div class="card teal white-text">
+				<div class="card answers ">
 				<span><%= answer.answerDate %></span><br>
-				<h3><%= answer.answerBody %></h3><br>
+				<p><%= answer.answerBody %></p><br>
 					</div>
 			</li>
 				
 <% }); %>
 		</ul>
+    </div>
+  </div>
+	</div>
 	
-	</li>
-	<h3>Answer now</h3>
-			
-				<form action="/question/answer/<%= question.id %>" method="POST">
-    <input type="text" name="answerBody" placeholder="">
-    <button class="waves-effect waves-light btn">Submit<i class="material-icons right">send</i></button>
-</form>
-			
-				<p>Please <a href="/auth/google">Login</a> to leave a comment</p>
-			
-
     <% }); %>
 </ul>
+
 
 <footer class="page-footer">
           <div class="container">
