@@ -14,10 +14,13 @@ mongoose.connect('mongodb://localhost/Q&AForum',function(){
     //prints 1 if connection made
     console.log(mongoose.connection.readyState);});
 
-app.get("/",function(req,res){
+app.get("/links",function(req,res){
     res.render("links");
 });
 
+app.get("/",function(req,res){
+	res.render("landing");
+});
 app.get("/question/new",function(req,res){
     res.render("questions/new");
 });

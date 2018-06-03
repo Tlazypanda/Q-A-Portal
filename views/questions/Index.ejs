@@ -3,6 +3,41 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<style>
+	html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px;
+	background-color:orange;
+    /* bottom = footer height */
+    
+}
+footer{
+	bottom:0;
+	position: absolute;
+	width: 100%;
+	
+}
+	.coll{
+		padding:25px;
+		margin:25px;
+		
+	}
+	
+	.card{
+		padding:25px;
+		margin:auto
+	}
+	
+	.card .fav{
+		float:right;
+	}
+	
+	
+</style>
 <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Logo</a>
@@ -16,31 +51,61 @@
 
 
 
-<ul class="collection">
+<ul class="coll">
 <% questions.forEach(function(question){ %>
     <li class="collection-item avatar">      
-		<p><%= question.date %></p><br><p> <%= question.content %></p><br><span ><i class="material-icons">favorite</i><%= question.likes %></span>
+		<div class="card">
+			<p><%= question.date %></p><br><h3><b> <%= question.content %></b></h3><span class="fav"><i class="material-icons">favorite</i><%= question.likes %></span>
+		</div>
 			<form action="/question/like/<%= question.id %>" method="POST">
-    <button class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">favorite</i></button>
+	<br>			
+    <button class="btn-floating btn-large waves-effect waves-light red" style="float:right"><i class="material-icons">favorite</i></button>
 </form>
-		<ul class="collection">
+		<h4 style="color:white">Answers</h4>
+		<ul class="coll" >
+			
 			<% question.answers.forEach(function(answer){ %>
 			<li class="collection-item avatar">
+				<div class="card teal white-text">
 				<span><%= answer.answerDate %></span><br>
-				<p><%= answer.answerBody %></p><br>
+				<h3><%= answer.answerBody %></h3><br>
+					</div>
 			</li>
+				
 <% }); %>
 		</ul>
 	
 	</li>
+	<h3>Answer now</h3>
 			
 				<form action="/question/answer/<%= question.id %>" method="POST">
     <input type="text" name="answerBody" placeholder="">
     <button class="waves-effect waves-light btn">Submit<i class="material-icons right">send</i></button>
 </form>
 			
-				<p>Please <a href="/auth/google">Log</a>in to leave a comment</p>
+				<p>Please <a href="/auth/google">Login</a> to leave a comment</p>
 			
 
     <% }); %>
 </ul>
+
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+             
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
