@@ -19,7 +19,7 @@ app.get("/links",function(req,res){
 });
 
 app.get("/",function(req,res){
-	res.render("landing");
+	res.render("landi");
 });
 app.get("/question/new",function(req,res){
     res.render("questions/new");
